@@ -3,6 +3,8 @@ const fs = require('fs');
 const pg = require('pg');
 const connectionString = process.env.DATABASE_URL || 'postgres://devdata@localhost:5432/devdata';
 
+console.log (connectionString);
+
 app.get("/", function(req, res) {
     res.send("Hello");
 });

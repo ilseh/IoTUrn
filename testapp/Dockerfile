@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 
 COPY . /usr/src/app
 # Install app dependencies
-npm install
+RUN npm install
 # Bundle app source
 
 EXPOSE 3000
