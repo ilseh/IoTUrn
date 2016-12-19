@@ -1,0 +1,112 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: testapp-pv
+ namespace: default
+ labels:
+   volume: testapp
+spec:
+ capacity:
+   storage: 500Mi
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: Retain
+ nfs:
+    server: nfs
+    path: "/data/testapp"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: testapp-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+  selector:
+    matchLabels:
+      volume: testapp
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: testapp
+  namespace: default
+  labels:
+    app: testapp
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: testapp
+    spec:
+      containers:
+        - name: testcontainer
+          image: mrdima/testapp
+          resources:
+            limits:
+              cpu: 300m
+              memory: 200Mi
+            requests:
+              cpu: 200m
+              memory: 100Mi
+          ports:
+            - containerPort: 3000
+              name: "http-server"
+          livenessProbe:
+            httpGet:
+             path: /
+             port: 3000
+            initialDelaySeconds: 600
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
+          volumeMounts:
+          - name: testapp-data
+            mountPath: /data
+      volumes:
+        - name: testapp-data
+          persistentVolumeClaim:
+            claimName: testapp-pvc
+---
+kind: Service
+apiVersion: v1
+metadata:
+ name: testapp
+ namespace: default
+ labels:
+   app: testapp
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    app: testapp
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: testapp-ingress
+  namespace: default
+  labels:
+    ingresstype: none
+spec:
+  tls:
+    - hosts:
+      - iot.yarden.appfactory.kpnis.nl
+      secretName: tls-secret-yarden2
+  rules:
+  - host: iot.yarden.appfactory.kpnis.nl
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: testapp
+          servicePort: 80
+

@@ -1,0 +1,85 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: postgres-pv
+ namespace: default
+ labels:
+   volume: postgres
+spec:
+ capacity:
+   storage: 5Gi
+ accessModes:
+   - ReadWriteOnce
+ persistentVolumeReclaimPolicy: Retain
+ nfs:
+    server: nfs
+    path: "/data/postgres"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: postgres-pvc
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  selector:
+    matchLabels:
+      volume: postgres
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: postgres
+  namespace: default
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: mrdima/postgres
+          env:
+            - name: DB_PASS
+              value: password
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+            requests:
+              cpu: 500m
+              memory: 500Mi
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+          - name: postgres-data
+            mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+---
+kind: Service
+apiVersion: v1
+metadata:
+ name: postgres
+ namespace: default
+ labels:
+   app: postgres
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: postgres
+
