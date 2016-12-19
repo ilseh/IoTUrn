@@ -1,0 +1,13 @@
+{
+  "name": "yarden",
+  "version": "1.0.0",
+  "description": "test rest api app",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "fs": "0.0.1-security",
+    "pg": "^6.1.2"
+  }
+}
