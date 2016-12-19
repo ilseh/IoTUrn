@@ -39,7 +39,6 @@ app.post("/devdata", function(req, res) {
   // Grab data from http request
   console.log (req.body)
   console.log ('---')
-  console.log (req.body.DevEUI_uplink.DevAddr)
   const data = {text: req.body.text, complete: false};
   // Get a Postgres client from the connection pool
   pg.connect(connectionString, (err, client, done) => {
