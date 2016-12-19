@@ -48,6 +48,9 @@ spec:
       containers:
         - name: testcontainer
           image: mrdima/testapp
+         env:
+            - name: DATABASE_URL
+              value: 'postgres://devdata@postgres.default.svc.appfactory.local/devdata'
           resources:
             limits:
               cpu: 300m
