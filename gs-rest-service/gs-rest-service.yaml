@@ -1,0 +1,78 @@
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: gs-rest-service
+  namespace: default
+  labels:
+    app: gs-rest-service
+spec:
+  replicas: 2 
+  template:
+    metadata:
+      labels:
+        app: gs-rest-service
+    spec:
+      containers:
+        - name: gs-rest-service
+          image: geerd/gs-rest-service
+          env:
+            - name: DATABASE_URL
+              value: 'postgres://devdata@postgres.default.svc.appfactory.local/devdata'
+            - name: JAVA_OPTS
+              value: '-Xmx500m -Xms500m'
+          resources:
+            limits:
+              cpu: 900m
+              memory: 450Mi
+            requests:
+              cpu: 900m
+              memory: 450Mi
+          ports:
+            - containerPort: 8080
+              name: "http-server"
+          livenessProbe:
+            httpGet:
+             path: /
+             port: 8080
+            initialDelaySeconds: 600
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 5
+---
+kind: Service
+apiVersion: v1
+metadata:
+ name: gs-rest-service
+ namespace: default
+ labels:
+   app: gs-rest-service
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: gs-rest-service
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gs-rest-service-ingress
+  namespace: default
+  labels:
+    ingresstype: none
+spec:
+  tls:
+    - hosts:
+      - iot.yarden.appfactory.kpnis.nl
+      secretName: tls-secret-yarden2
+  rules:
+  - host: iot.yarden.appfactory.kpnis.nl
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: gs-rest-service
+          servicePort: 8080
+
