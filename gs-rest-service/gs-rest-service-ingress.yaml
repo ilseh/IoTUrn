@@ -1,0 +1,21 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: gs-rest-service-prod
+  namespace: default
+  labels:
+    ingresstype: none
+spec:
+  tls:
+    - hosts:
+      - iot.yarden.appfactory.kpnis.nl
+      secretName: tls-secret-yarden2
+  rules:
+  - host: iot.yarden.appfactory.kpnis.nl
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: gs-rest-service-prod
+          servicePort: 8080
