@@ -1,0 +1,173 @@
+h1 {
+	font: 20px Verdana, Geneva, sans-serif;
+	background:#a2b3a1;
+	color: #f5f5f5;
+	padding-top: 50px;
+    padding-right: 250px;
+    padding-bottom: 25px;
+    padding-left: 10px;
+}
+
+
+
+body {
+    font: 12px Verdana, Geneva, sans-serif;
+}
+
+.mandatory {
+    font-weight: bold;
+}
+
+.error {
+    font: 10px Verdana, Geneva, sans-serif;
+    color: red;
+}
+
+.info, .message {
+    font: 10px Verdana, Geneva, sans-serif;
+    color: blue;
+}
+
+.explanation {
+    font: 14px Verdana, Geneva, sans-serif;
+    color: blue;
+    padding-top: 25px;
+    padding-right: 50px;
+    padding-bottom: 25px;
+    padding-left: 0px;
+}
+.readonly {
+    background-color: #d1d1d1;
+}
+
+a, a:visited{color:#000; font-weight:bold; text-decoration:none;}
+ul.navigation{list-style:none; font: normal Tahoma, Verdana, Geneva, sans-serif;}
+ul.navigation li{ background:#ececec; margin:1px;padding:5px 15px; display:block; float:left;}
+ul.navigation li.highlight{ background:#a2b3a1;}
+ul.navigation li.highlight a{ color:#f5f5f5; cursor:default;}
+div.navigation {
+	display: block;
+	background-color: #d1d1d1;
+}
+
+
+input[type="reset"], input[type="button"], input[type="submit"] {
+    background-color: #ccc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 4px;
+    color: #0066CC;
+    font-family: 'Verdana';
+    font-size: 13px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+}
+
+.fileUpload {
+    display:inline;
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+    color: #0066CC;
+    background-color: #ccc;
+    position: relative;
+    overflow: hidden;
+    margin: 1px;
+    padding: 3px;
+    border-radius: 4px;
+}
+
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-family: 'Verdana';
+    font-size: 13px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity = 0);
+}
+
+table.listNavigation {
+  border-collapse: collapse;
+  width: 90%;
+  text-align: right;
+  vertical-align: middle; 
+}
+
+table.errorMessage {
+  padding: 15px;
+  width: 90%;
+  text-align: left;
+  vertical-align: middle; 
+}
+
+table.collectivityDiscounts {
+  border-collapse: collapse;
+  width: 90%;
+}
+
+.collectivityDiscounts th {
+  font:14px Verdana,Geneva,sans-serif;
+  font-weight: bold;
+  padding: 0.25rem;
+  text-align: center;
+  background-color: #E0E0E0;
+  border: 1px solid #484848;
+}
+
+.collectivityDiscounts td {
+  padding: 0.25rem;
+  text-align: left;
+  border: 1px solid #484848;
+}
+
+.collectivityDiscounts tbody tr:hover {
+  background: #F0F0F0;
+}
+
+.collectivityDiscounts tfoot tr {
+   border: none;
+   text-align: right;
+}
+
+img { 
+    display: inline-block;
+    height: 20;
+    width: 20;
+    border-style: none;
+}
+
+td a {
+    font:12px Verdana,Geneva,sans-serif;
+    vertical-align: middle;
+    text-decoration:none;
+}
+
+td a.pageNumber {
+    color: #003366;
+    font-weight: normal;
+}
+
+td a.pageNumber:hover, a.pageNumber:active{
+    color: #660000;
+    font-weight: normal;
+    text-decoration: underline;
+}
+
+td a.currentPageNumber {
+    color: #0000CC;
+    font-weight: bold;
+}
+
+td a.currentPageNumber:hover, a.currentPageNumber:active {
+    color: #660033;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+#rowSeparator {
+	height: 120px;
+	color: #AA80FF;
+}

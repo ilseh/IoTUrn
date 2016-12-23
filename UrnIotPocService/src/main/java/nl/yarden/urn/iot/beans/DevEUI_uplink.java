@@ -15,11 +15,11 @@ public class DevEUI_uplink {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
 	private Date time;
-	
+
 	private String payload_hex;
-	
+
 	private String DevEUI;
 
 	/**
@@ -78,5 +78,5 @@ public class DevEUI_uplink {
 	public void setDevEUI(String devEUI) {
 		DevEUI = devEUI;
 	}
-	
+
 }
