@@ -3,6 +3,10 @@ package nl.yarden.urn.iot;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Start spring boot application.
+ *
+ */
 @SpringBootApplication
 public class Application {
 

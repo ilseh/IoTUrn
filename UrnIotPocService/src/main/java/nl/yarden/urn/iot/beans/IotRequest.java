@@ -1,5 +1,9 @@
 package nl.yarden.urn.iot.beans;
 
+/**
+ * Request from IoT platform. 
+ *
+ */
 public class IotRequest {
 	
 	private DevEUI_uplink devEui_uplink;
