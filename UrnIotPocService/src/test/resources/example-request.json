@@ -1,0 +1,42 @@
+{
+    "DevEUI_uplink": {
+        "Time": "2016-12-23T11:20:19.121+01:00",
+        "DevEUI": "0059AC0014300E16",
+        "FPort": "1",
+        "FCntUp": "0",
+        "ADRbit": "1",
+        "MType": "4",
+        "FCntDn": "1",
+        "payload_hex": "ffc1c74414521189100000000000000003c3ffffffff",
+        "mic_hex": "10e14411",
+        "Lrcid": "0059AC01",
+        "LrrRSSI": "-120.000000",
+        "LrrSNR": "-6.250000",
+        "SpFact": "8",
+        "SubBand": "G1",
+        "Channel": "LC2",
+        "DevLrrCnt": "1",
+        "Lrrid": "080603BF",
+        "Late": "0",
+        "LrrLAT": "52.326794",
+        "LrrLON": "6.208024",
+        "Lrrs": {
+            "Lrr": {
+                "Lrrid": "080603BF",
+                "Chain": "0",
+                "LrrRSSI": "-120.000000",
+                "LrrSNR": "-6.250000",
+                "LrrESP": "-127.174179"
+            }
+        },
+        "CustomerID": "100006211",
+        "CustomerData": {
+            "alr": {
+                "pro": "SMTC/LoRaMote",
+                "ver": "1"
+            }
+        },
+        "ModelCfg": "0",
+        "DevAddr": "14300E16"
+    }
+}
