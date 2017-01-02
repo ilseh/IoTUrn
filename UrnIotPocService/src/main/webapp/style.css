@@ -103,12 +103,12 @@ table.errorMessage {
   vertical-align: middle; 
 }
 
-table.collectivityDiscounts {
+table.show {
   border-collapse: collapse;
   width: 90%;
 }
 
-.collectivityDiscounts th {
+.show th {
   font:14px Verdana,Geneva,sans-serif;
   font-weight: bold;
   padding: 0.25rem;
@@ -117,21 +117,51 @@ table.collectivityDiscounts {
   border: 1px solid #484848;
 }
 
-.collectivityDiscounts td {
+.show td {
   padding: 0.25rem;
   text-align: left;
   border: 1px solid #484848;
 }
 
-.collectivityDiscounts tbody tr:hover {
+.show tbody tr:hover {
   background: #F0F0F0;
 }
 
-.collectivityDiscounts tfoot tr {
+.show tfoot tr {
    border: none;
    text-align: right;
 }
 
+
+table.edit {
+  border-collapse: collapse;
+  width: 50%;
+}
+
+.edit th {
+  font:14px Verdana,Geneva,sans-serif;
+  font-weight: bold;
+  padding: 0.25rem;
+  text-align: center;
+  background-color: #E0E0E0;
+  border: none;
+}
+
+.edit td {
+  padding: 0.25rem;
+  text-align: left;
+  border: 1px;
+}
+
+
+.edit tfoot td {
+   border: 1px;
+   text-align: right;
+}
+.edit input[type=submit] {
+	background-color: #E0E0E0;
+	color: black;
+}
 img { 
     display: inline-block;
     height: 20;

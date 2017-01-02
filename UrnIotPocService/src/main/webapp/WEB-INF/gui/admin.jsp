@@ -11,7 +11,7 @@
 	<c:if test="${not empty urnForm.error}">
 		<div class="error">${urnForm.error}</div>
 	</c:if>
-	<table class="collectivityDiscount">
+	<table class="edit">
 		<tr>
 			<td><label id="lblUrnTag" class="mandatory"
 				for="inputUrnTag">Device ID:</label></td>
@@ -52,10 +52,12 @@
 			<td />
 			<td><form:errors path="urn.deceasedLastName" cssClass="error" /></td>
 		</tr>
+		<tfoot>
 		<tr>
-			<td colspan="2" align="right"><input type="submit" name="save" value="Opslaan" />
+			<td colspan="2"><input type="submit" name="save" value="Opslaan" />
 			</td>
 		</tr>
+		</tfoot>
 	</table>
 </form:form>
 <%@include file="footer.html" %>

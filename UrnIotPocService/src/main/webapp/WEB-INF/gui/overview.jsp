@@ -10,7 +10,7 @@
 	<h1>Activiteiten urn</h1>
 	<c:if test="${not empty eventsForm.eventsPagedList.pageList}">
 
-		<table class="collectivityDiscounts">
+		<table class="show">
 			<thead>
 				<tr>
 					<c:forEach var="columnHeader" items="${eventsForm.columnHeaders}"

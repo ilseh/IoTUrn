@@ -54,4 +54,13 @@ public class Helper {
 	public List<Urn> getAllUrns() {
 		return StreamSupport.stream(urnRepository.findAll().spliterator(), false).collect(Collectors.toList());
 	}
+
+	/**
+	 * Get urn entries belonging by lastname.
+	 * @param lastname
+	 * @return
+	 */
+	public List<Urn> getDeceasedUrns(String lastname) {
+		return StreamSupport.stream(urnRepository.findByLastName(lastname).spliterator(), false).collect(Collectors.toList());
+	}
 }

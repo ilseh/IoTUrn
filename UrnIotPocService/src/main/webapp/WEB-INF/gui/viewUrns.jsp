@@ -10,7 +10,7 @@
 <form:form method="post" modelAttribute="viewUrnsForm">
 	<c:if test="${not empty viewUrnsForm.eventsPagedList.pageList}">
 
-		<table class="collectivityDiscounts">
+		<table class="show">
 			<thead>
 				<tr>
 					<c:forEach var="columnHeader" items="${viewUrnsForm.columnHeaders}"
@@ -29,6 +29,7 @@
 						<td>${urn.deceasedFirstName} ${urn.deceasedLastName}</td>
 						<td>${urn.referenceId}</td>
 						<td><a href="<c:url value="viewEvents"><c:param name="urnTag" value="${urn.devEUI}"/></c:url>">${urn.devEUI}</a></td>
+						<td>${urn.dateLch}</td>
 					</tr>
 				</c:forEach>
 			</tbody>
