@@ -3,10 +3,14 @@
  */
 package nl.yarden.urn.iot.beans;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+
+import org.hibernate.annotations.Formula;
 
 /**
  * Urn.
@@ -27,6 +31,9 @@ public class Urn {
 	// Name of the deceased person in the urn.
 	private String deceasedFirstName;
 	private String deceasedLastName;
+
+	@Formula("(SELECT max(d.time) FROM deveui_uplink d WHERE d.DevEUI = DevEUI)")
+	private Date dateLch;
 
 	/**
 	 * @return the deceasedFirstName
@@ -88,6 +95,18 @@ public class Urn {
 	 */
 	public void setReferenceId(String referenceId) {
 		this.referenceId = referenceId;
+	}
+	/**
+	 * @return the dateLch
+	 */
+	public Date getDateLch() {
+		return this.dateLch;
+	}
+	/**
+	 * @param dateLch the dateLch to set
+	 */
+	public void setDateLch(Date dateLch) {
+		this.dateLch = dateLch;
 	}
 
 }

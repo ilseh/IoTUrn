@@ -2,6 +2,7 @@ package nl.yarden.urn.iot;
 
 import java.util.Arrays;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import nl.yarden.urn.iot.beans.DevEUI_uplink;
 import nl.yarden.urn.iot.beans.IotRequest;
 import nl.yarden.urn.iot.beans.Urn;
+import nl.yarden.urn.iot.ui.DeceasedForm;
 import nl.yarden.urn.iot.ui.Helper;
 import nl.yarden.urn.iot.ui.ListForm;
 import nl.yarden.urn.iot.ui.UrnForm;
@@ -33,6 +36,7 @@ public class IotController {
 	private final static String OVERVIEW = "gui/overview";
 	private final static String VIEW_URNS = "gui/viewUrns";
 	private final static String ADMIN = "gui/admin";
+	private final static String DECEASED = "gui/deceased";
 	@Autowired
 	private DevEuiRepository repository;
 	@Autowired
@@ -46,20 +50,6 @@ public class IotController {
 	public ModelAndView admin(@ModelAttribute UrnForm urnForm) {
 		LOG.debug("Admin urn");
 		return createDefaultModelView(new ModelAndView(ADMIN, "urnForm", urnForm));
-	}
-
-
-	/**
-	 * Administer IoT device on urn.
-	 * @return view for administering urn
-	 */
-	@RequestMapping(path="/viewUrns", method = RequestMethod.GET)
-	public ModelAndView viewUrns(@ModelAttribute ListForm<Urn> urnsForm) {
-		LOG.debug("View urns");
-		PagedListHolder<Urn> urnsPagedList = new PagedListHolder<>(helper.getAllUrns());
-		urnsForm = new ListForm<>(urnsPagedList);
-		urnsForm.setColumnHeaders(Arrays.asList("ID", "Overledene", "Intern referentie id", "Urn Id"));
-		return createDefaultModelView(new ModelAndView(VIEW_URNS, "viewUrnsForm", urnsForm));
 	}
 
 	/**
@@ -77,10 +67,24 @@ public class IotController {
 		return createDefaultModelView(new ModelAndView(ADMIN, "urnForm", urnForm));
 	}
 
-	ModelAndView createDefaultModelView(ModelAndView mv) {
-		//        mv.addObject(CONFIG, config);
-		return mv;
+	/**
+	 * Administer IoT device on urn.
+	 * @return view for administering urn
+	 */
+	@RequestMapping(path="/viewUrns", method = RequestMethod.GET)
+	public ModelAndView viewUrns(@ModelAttribute ListForm<Urn> urnsForm, @RequestParam(required = false) String deceasedLastName) {
+		LOG.debug("View urns");
+		PagedListHolder<Urn> urnsPagedList = null;
+		if (deceasedLastName != null) {
+			urnsPagedList = new PagedListHolder<>(helper.getDeceasedUrns(deceasedLastName));
+		} else {
+			urnsPagedList = new PagedListHolder<>(helper.getAllUrns());
+		}
+		urnsForm = new ListForm<>(urnsPagedList);
+		urnsForm.setColumnHeaders(Arrays.asList("ID", "Overledene", "Intern referentie id", "Urn Id", "Datum laatste beweging"));
+		return createDefaultModelView(new ModelAndView(VIEW_URNS, "viewUrnsForm", urnsForm));
 	}
+
 
 	/**
 	 * Endpoint to receive events from the IoT device on the urn.
@@ -103,8 +107,28 @@ public class IotController {
 		eventsPagedList.setSort(new MutableSortDefinition("time", true, false));
 		eventsPagedList.resort();
 		ListForm<DevEUI_uplink> eventsForm = new ListForm<>(eventsPagedList);
-		eventsForm.setColumnHeaders(Arrays.asList("ID", "Urn tag", "Payload", "Time"));
+		eventsForm.setColumnHeaders(Arrays.asList("ID", "Urn tag", "Payload", "Tijdstip beweging"));
 
 		return createDefaultModelView(new ModelAndView(OVERVIEW, "eventsForm", eventsForm));
+	}
+
+	/**
+	 * Endpoint to search deceased.
+	 * @param request with event
+	 */
+	@RequestMapping(path="/deceased")
+	public ModelAndView deceased(@RequestParam(required = false) String searchLastName) {
+		LOG.debug("Viewing deceased");
+		if (StringUtils.isNoneBlank(searchLastName)) {
+			return createDefaultModelView(new ModelAndView(new RedirectView("/viewUrns?deceasedLastName=" + searchLastName)));
+		} else {
+			return createDefaultModelView(new ModelAndView(DECEASED, "deceasedForm", new DeceasedForm()));
+		}
+
+	}
+
+	ModelAndView createDefaultModelView(ModelAndView mv) {
+		//        mv.addObject(CONFIG, config);
+		return mv;
 	}
 }
