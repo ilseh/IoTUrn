@@ -125,7 +125,6 @@ public class IotController {
 		} else {
 			return createDefaultModelView(new ModelAndView(DECEASED, "deceasedForm", new DeceasedForm()));
 		}
-
 	}
 
 	/**
@@ -135,7 +134,7 @@ public class IotController {
 	@RequestMapping(path="/hello")
 	public @ResponseBody String hello() {
 		LOG.debug("hello");
-		return "hello";
+		return "hello there";
 	}
 
 	ModelAndView createDefaultModelView(ModelAndView mv) {
