@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -125,6 +126,16 @@ public class IotController {
 			return createDefaultModelView(new ModelAndView(DECEASED, "deceasedForm", new DeceasedForm()));
 		}
 
+	}
+
+	/**
+	 * Hello
+	 * @return
+	 */
+	@RequestMapping(path="/hello")
+	public @ResponseBody String hello() {
+		LOG.debug("hello");
+		return "hello";
 	}
 
 	ModelAndView createDefaultModelView(ModelAndView mv) {
