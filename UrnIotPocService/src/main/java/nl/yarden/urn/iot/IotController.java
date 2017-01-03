@@ -34,10 +34,10 @@ import nl.yarden.urn.iot.ui.UrnForm;
 @RestController
 public class IotController {
 	private static final Logger LOG = LoggerFactory.getLogger(IotController.class);
-	private final static String OVERVIEW = "gui/overview";
-	private final static String VIEW_URNS = "gui/viewUrns";
-	private final static String ADMIN = "gui/admin";
-	private final static String DECEASED = "gui/deceased";
+	private final static String OVERVIEW = "overview";
+	private final static String VIEW_URNS = "viewUrns";
+	private final static String ADMIN = "admin";
+	private final static String DECEASED = "deceased";
 	@Autowired
 	private DevEuiRepository repository;
 	@Autowired
