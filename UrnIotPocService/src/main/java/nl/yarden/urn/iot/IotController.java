@@ -23,12 +23,13 @@ import nl.yarden.urn.iot.beans.DevEUI_uplink;
 import nl.yarden.urn.iot.beans.IotRequest;
 import nl.yarden.urn.iot.beans.Urn;
 import nl.yarden.urn.iot.ui.DeceasedForm;
-import nl.yarden.urn.iot.ui.Helper;
+import nl.yarden.urn.iot.ui.DeviceActions;
+import nl.yarden.urn.iot.ui.RepositoryActions;
 import nl.yarden.urn.iot.ui.ListForm;
 import nl.yarden.urn.iot.ui.UrnForm;
 
 /**
- * Controller.
+ * Controller web interface.
  *
  */
 @RestController
@@ -39,9 +40,9 @@ public class IotController {
 	private final static String ADMIN = "admin";
 	private final static String DECEASED = "deceased";
 	@Autowired
-	private DevEuiRepository repository;
+	private RepositoryActions repositories;
 	@Autowired
-	private Helper helper;
+	private DeviceActions deviceCommands;
 
 	/**
 	 * Administer IoT device on urn.
@@ -61,7 +62,7 @@ public class IotController {
 	public ModelAndView saveUrnConfig(@ModelAttribute UrnForm urnForm) {
 		LOG.debug("Admin urn");
 		try {
-			helper.saveUrn(urnForm.getUrn());
+			repositories.saveUrn(urnForm.getUrn());
 		} catch (DataIntegrityViolationException ex) {
 			urnForm.setError(ex.getMostSpecificCause().getMessage());
 		}
@@ -69,20 +70,24 @@ public class IotController {
 	}
 
 	/**
-	 * Administer IoT device on urn.
-	 * @return view for administering urn
+	 * View configured urns.
+	 * @param urnsForm form that can contain list of urns
+	 * @param deceasedLastName lastname of deceased, only that urns of persons with that lastname are fetched
+	 * @return view with urns
 	 */
 	@RequestMapping(path="/viewUrns", method = RequestMethod.GET)
-	public ModelAndView viewUrns(@ModelAttribute ListForm<Urn> urnsForm, @RequestParam(required = false) String deceasedLastName) {
+	public ModelAndView viewUrns(@ModelAttribute ListForm<Urn> urnsForm, @RequestParam(required = false) String deceasedLastName,
+			@RequestParam(required = false) String deviceId, @RequestParam(required = false) String action) {
 		LOG.debug("View urns");
 		PagedListHolder<Urn> urnsPagedList = null;
-		if (deceasedLastName != null) {
-			urnsPagedList = new PagedListHolder<>(helper.getDeceasedUrns(deceasedLastName));
+		if (StringUtils.isNotBlank(deceasedLastName)) {
+			urnsPagedList = new PagedListHolder<>(repositories.getDeceasedUrns(deceasedLastName));
 		} else {
-			urnsPagedList = new PagedListHolder<>(helper.getAllUrns());
+			urnsPagedList = new PagedListHolder<>(repositories.getAllUrns());
 		}
+		urnsPagedList.getSource().stream().forEach(urn -> {if (urn.getDevEUI().equalsIgnoreCase(deviceId)) {urn.setCurrentAction(action);}});
 		urnsForm = new ListForm<>(urnsPagedList);
-		urnsForm.setColumnHeaders(Arrays.asList("ID", "Overledene", "Intern referentie id", "Urn Id", "Datum laatste beweging"));
+		urnsForm.setColumnHeaders(Arrays.asList("ID", "Overledene", "Intern referentie id", "Urn Id", "Datum laatste beweging", "", ""));
 		return createDefaultModelView(new ModelAndView(VIEW_URNS, "viewUrnsForm", urnsForm));
 	}
 
@@ -94,17 +99,18 @@ public class IotController {
 	@RequestMapping(path="/devdata", method = RequestMethod.POST)
 	public void storeIotRequest(@RequestBody IotRequest request) {
 		LOG.debug(String.format("received request: %s", request));
-		repository.save(request.getDevEui_uplink());
+		repositories.saveUrnEvent(request.getDevEui_uplink());
 	}
 
 	/**
 	 * View events on urn.
-	 * @return view with urn event information
+	 * @param urnTag id/tag of urn to view event info for
+	 * @return view with urn events information
 	 */
 	@RequestMapping(path="/viewEvents")
 	public ModelAndView viewEvents(@RequestParam(required = true) String urnTag) {
 		LOG.debug("Viewing urn events");
-		PagedListHolder<DevEUI_uplink> eventsPagedList = new PagedListHolder<>(helper.getAllEvents(urnTag));
+		PagedListHolder<DevEUI_uplink> eventsPagedList = new PagedListHolder<>(repositories.getAllEvents(urnTag));
 		eventsPagedList.setSort(new MutableSortDefinition("time", true, false));
 		eventsPagedList.resort();
 		ListForm<DevEUI_uplink> eventsForm = new ListForm<>(eventsPagedList);
@@ -114,8 +120,8 @@ public class IotController {
 	}
 
 	/**
-	 * Endpoint to search deceased.
-	 * @param request with event
+	 * Endpoint to search deceased person.
+	 * @param searchLastName search on basis of lastname, if none is specified, all deceaseds are returned
 	 */
 	@RequestMapping(path="/deceased")
 	public ModelAndView deceased(@RequestParam(required = false) String searchLastName) {
@@ -128,8 +134,8 @@ public class IotController {
 	}
 
 	/**
-	 * Hello
-	 * @return
+	 * Hello world, used in health check Kubernetes.
+	 * @return arbitrary string.
 	 */
 	@RequestMapping(path="/hello")
 	public @ResponseBody String hello() {
@@ -137,6 +143,25 @@ public class IotController {
 		return "hello there";
 	}
 
+	/**
+	 * Hello world, used in health check Kubernetes.
+	 * @return arbitrary string.
+	 */
+	@RequestMapping(path="/lightUrn")
+	public ModelAndView lightUrn(@RequestParam String deviceId, @RequestParam boolean on, @RequestParam(required = false) String deceasedLastName) {
+		String action = on ? "on" : "off";
+		LOG.debug("Turn light {} for device: {}", action, deviceId);
+		deviceCommands.turnLight(on, deviceId);
+
+		return createDefaultModelView(new ModelAndView(new RedirectView(
+				String.format("/viewUrns?deviceId=%s&action=turned_light_%s&deceasedLastName=%s", deviceId, action, deceasedLastName))));
+	}
+
+	/**
+	 * Method that creates default modelAndView. Useful in case we do standard operations on it.
+	 * @param mv default modelAndView
+	 * @return default modelAndView
+	 */
 	ModelAndView createDefaultModelView(ModelAndView mv) {
 		//        mv.addObject(CONFIG, config);
 		return mv;

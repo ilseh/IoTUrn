@@ -1,0 +1,25 @@
+spring.jackson.parser.ALLOW_UNQUOTED_FIELD_NAMES: true
+spring.jackson.parser.ALLOW_SINGLE_QUOTES: true
+spring.jackson.mapper.accept_case_insensitive_properties: true
+
+spring.jpa.database: POSTGRESQL
+spring.datasource.platform: postgres
+spring.jpa.show-sql: true
+spring.jpa.hibernate.ddl-auto: update
+spring.database.driverClassName: org.postgresql.Driver
+spring.datasource.url: jdbc:postgresql://postgres.default.svc.appfactory.local:5432/iot
+spring.datasource.username: iot
+spring.datasource.password: iot
+
+spring.mvc.view.prefix: /WEB-INF/jsp/
+spring.mvc.view.suffix: .jsp
+
+server.tomcat.remote_ip_header: x-forwarded-for
+server.tomcat.protocol_header: x-forwarded-proto
+
+# Application properties
+appConfig: 
+    kpnAsid: appfactory
+    kpnAeskey: B9E2547747DEB3A59671D042B5361CF3
+    kpnLoraUrl: https://api.kpn-lora.com/thingpark/lrc/rest/downlink
+    kpnCommandPort: 119

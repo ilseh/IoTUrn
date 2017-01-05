@@ -30,6 +30,19 @@
 						<td>${urn.referenceId}</td>
 						<td><a href="<c:url value="viewEvents"><c:param name="urnTag" value="${urn.devEUI}"/></c:url>">${urn.devEUI}</a></td>
 						<td>${urn.dateLch}</td>
+						<td><a href="<c:url value="lightUrn"><c:param name="deviceId" value="${urn.devEUI}"/><c:param name="on" value="true"/><c:param name="deceasedLastName" value="${param.deceasedLastName}"/></c:url>"><input type="button" value="Aan"/></a>
+						<a href="<c:url value="lightUrn"><c:param name="deviceId" value="${urn.devEUI}"/><c:param name="on" value="false"/><c:param name="deceasedLastName" value="${param.deceasedLastName}"/></c:url>"><input type="button" value="Uit"/></a>
+						</td>
+						<td>
+						<c:choose>
+							<c:when test="${urn.currentAction == 'turned_light_on'}">
+								<img src="LightOn.gif" height="40" width="40"/>
+							</c:when>	
+							<c:when test="${urn.currentAction == 'turned_light_off'}">
+								<img src="LightOff.gif" height="40" width="40"/>
+							</c:when>
+						</c:choose>
+						</td>
 					</tr>
 				</c:forEach>
 			</tbody>

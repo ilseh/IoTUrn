@@ -16,11 +16,11 @@ import nl.yarden.urn.iot.beans.DevEUI_uplink;
 import nl.yarden.urn.iot.beans.Urn;
 
 /**
- * Helper for UI stuff.
+ * Repository actions for UI stuff.
  *
  */
 @Component
-public class Helper {
+public class RepositoryActions {
 	@Autowired
 	private DevEuiRepository eventsRepository;
 	@Autowired
@@ -62,5 +62,13 @@ public class Helper {
 	 */
 	public List<Urn> getDeceasedUrns(String lastname) {
 		return StreamSupport.stream(urnRepository.findByLastName(lastname).spliterator(), false).collect(Collectors.toList());
+	}
+
+	/**
+	 * Save urn event in db.
+	 * @param event urn event
+	 */
+	public void saveUrnEvent(DevEUI_uplink event) {
+		eventsRepository.save(event);
 	}
 }
