@@ -40,7 +40,7 @@ RUN apk upgrade --update && \
       cp -v /tmp/UnlimitedJCEPolicyJDK8/*.jar /opt/jdk/jre/lib/security; \
     fi && \
     sed -i s/#networkaddress.cache.ttl=-1/networkaddress.cache.ttl=30/ $JAVA_HOME/jre/lib/security/java.security && \
-    apk del curl glibc-i18n && \
+    apk del glibc-i18n && \
     rm -rf /opt/jdk/*src.zip \
            /opt/jdk/lib/missioncontrol \
            /opt/jdk/lib/visualvm \
@@ -76,6 +76,13 @@ RUN apk upgrade --update && \
     echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
 
 # end of java installation
+
+RUN curl https://cert.pkioverheid.nl/EVIntermediairCA.cer > /tmp/EVIntermediairCA.cer \
+    && curl https://cert.pkioverheid.nl/KPN_PKIoverheid_EV_CA.cer > /tmp/KPN_PKIoverheid_EV_CA.cer \
+    && keytool -import -noprompt -trustcacerts -storepass changeit -alias sdnevica -file /tmp/EVIntermediairCA.cer -keystore /opt/jdk/jre/lib/security/cacerts \
+    && keytool -import -noprompt -trustcacerts -storepass changeit -alias kpnpkioverheidevca -file /tmp/KPN_PKIoverheid_EV_CA.cer -keystore /opt/jdk/jre/lib/security/cacerts \
+    && rm /tmp/*.cer
+
 RUN mkdir -p /opt/spring
 
 WORKDIR /opt/spring
