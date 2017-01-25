@@ -34,46 +34,31 @@ public class Processor {
 	 *
 	 */
 	public static enum Command {
-		BUZZ("00"), LIGHT("01"), SYSTEM("02");
+		// 1 second on, 1 second off with no end time
+		LIGHT_RED_BLINK("01010a0aff"),
+		LIGHT_RED_OFF("0101000000");
 
-		private final String command;
+		private String commando;
 
 		private Command(String aCommand) {
-			command = aCommand;
-		}
-	}
-
-	/**
-	 * Command's arguments.
-	 *
-	 */
-	public static enum CommandArg {
-		LIGHT_COLOR_RED("01", Command.LIGHT), LIGHT_COLOR_GREEN("02", Command.LIGHT), LIGHT_COLOR_YELLOW("04", Command.LIGHT),
-		LIGHT_ALLWAYS_ON("ff", Command.LIGHT), LIGHT_ALLWAYS_OFF("00ff", Command.LIGHT),
-		LIGHT_PATTERN_FOREVER("ff", Command.LIGHT);
-
-		private final String arg;
-		private final Command command;
-
-		private CommandArg(String anArg, Command aCommand) {
-			arg = anArg;
-			command = aCommand;
+			commando = aCommand;
 		}
 
 		/**
-		 * @return string containing command and it's argument
+		 * @return the commando
 		 */
 		public String getCommando() {
-			return command.command + arg;
+			return commando;
 		}
 	}
+
 
 	/**
 	 * Turn light on.
 	 * @param deviceId id of device
 	 */
 	public void turnLightOn(String deviceId) {
-		changeDeviceState(deviceId, CommandArg.LIGHT_ALLWAYS_ON.getCommando());
+		changeDeviceState(deviceId, Command.LIGHT_RED_BLINK.getCommando());
 	}
 
 	/**
@@ -81,7 +66,7 @@ public class Processor {
 	 * @param deviceId id of device
 	 */
 	public void turnLightOff(String deviceId) {
-		changeDeviceState(deviceId, CommandArg.LIGHT_ALLWAYS_OFF.getCommando());
+		changeDeviceState(deviceId, Command.LIGHT_RED_OFF.getCommando());
 	}
 
 

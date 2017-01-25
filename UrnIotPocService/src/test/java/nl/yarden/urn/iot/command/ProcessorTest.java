@@ -69,6 +69,22 @@ public class ProcessorTest {
 
 		verify(kpnHttpHandlerMock).executeCommand(kpnHandlerArgCaptor.capture());
 		assertTrue(kpnHandlerArgCaptor.getValue().matches(
-				"DevEUI=0059AC0014300E16&FPort=119&Payload=01ff&AS_ID=appfactory&Confirmed=0&Time=\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z&Token=.{64}"));
+				"DevEUI=0059AC0014300E16&FPort=119&Payload=01010a0aff&AS_ID=appfactory&Confirmed=0&Time=\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z&Token=.{64}"));
+	}
+
+
+	/**
+	 * Test turnLightOff.
+	 */
+	@Test
+	public void testTurnLightOff() {
+		String deviceId = "0059AC0014300E16";
+
+		when(kpnHttpHandlerMock.executeCommand(anyString())).thenReturn("OK");
+		processor.turnLightOff(deviceId);
+
+		verify(kpnHttpHandlerMock).executeCommand(kpnHandlerArgCaptor.capture());
+		assertTrue(kpnHandlerArgCaptor.getValue().matches(
+				"DevEUI=0059AC0014300E16&FPort=119&Payload=0101000000&AS_ID=appfactory&Confirmed=0&Time=\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z&Token=.{64}"));
 	}
 }

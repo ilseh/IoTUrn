@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -24,8 +25,8 @@ import nl.yarden.urn.iot.beans.IotRequest;
 import nl.yarden.urn.iot.beans.Urn;
 import nl.yarden.urn.iot.ui.DeceasedForm;
 import nl.yarden.urn.iot.ui.DeviceActions;
-import nl.yarden.urn.iot.ui.RepositoryActions;
 import nl.yarden.urn.iot.ui.ListForm;
+import nl.yarden.urn.iot.ui.RepositoryActions;
 import nl.yarden.urn.iot.ui.UrnForm;
 
 /**
@@ -43,6 +44,8 @@ public class IotController {
 	private RepositoryActions repositories;
 	@Autowired
 	private DeviceActions deviceCommands;
+	private static final String HTTPEXCEPTION_404 = "404 Not Found";
+	private static final String STATUS_NOT_FOUND = "Device bestaat niet";
 
 	/**
 	 * Administer IoT device on urn.
@@ -77,7 +80,7 @@ public class IotController {
 	 */
 	@RequestMapping(path="/viewUrns", method = RequestMethod.GET)
 	public ModelAndView viewUrns(@ModelAttribute ListForm<Urn> urnsForm, @RequestParam(required = false) String deceasedLastName,
-			@RequestParam(required = false) String deviceId, @RequestParam(required = false) String action) {
+			@RequestParam(required = false) String deviceId, @RequestParam(required = false) String status) {
 		LOG.debug("View urns");
 		PagedListHolder<Urn> urnsPagedList = null;
 		if (StringUtils.isNotBlank(deceasedLastName)) {
@@ -85,7 +88,7 @@ public class IotController {
 		} else {
 			urnsPagedList = new PagedListHolder<>(repositories.getAllUrns());
 		}
-		urnsPagedList.getSource().stream().forEach(urn -> {if (urn.getDevEUI().equalsIgnoreCase(deviceId)) {urn.setCurrentAction(action);}});
+		urnsPagedList.getSource().stream().forEach(urn -> {if (urn.getDevEUI().equalsIgnoreCase(deviceId)) {urn.setCurrentAction(status);}});
 		urnsForm = new ListForm<>(urnsPagedList);
 		urnsForm.setColumnHeaders(Arrays.asList("ID", "Overledene", "Intern referentie id", "Urn Id", "Datum laatste beweging", "", ""));
 		return createDefaultModelView(new ModelAndView(VIEW_URNS, "viewUrnsForm", urnsForm));
@@ -151,10 +154,19 @@ public class IotController {
 	public ModelAndView lightUrn(@RequestParam String deviceId, @RequestParam boolean on, @RequestParam(required = false) String deceasedLastName) {
 		String action = on ? "on" : "off";
 		LOG.debug("Turn light {} for device: {}", action, deviceId);
-		deviceCommands.turnLight(on, deviceId);
+		String status = "light_" + action;
+		try {
+			deviceCommands.turnLight(on, deviceId);
+		} catch (HttpClientErrorException ex) {
+			if (HTTPEXCEPTION_404.contains(ex.getMessage())) {
+				status = STATUS_NOT_FOUND;
+			}
+		} catch (Exception ex) {
+			status = ex.getMessage();
+		}
 
 		return createDefaultModelView(new ModelAndView(new RedirectView(
-				String.format("/viewUrns?deviceId=%s&action=turned_light_%s&deceasedLastName=%s", deviceId, action, deceasedLastName))));
+				String.format("/viewUrns?deviceId=%s&status=%s&deceasedLastName=%s", deviceId, status, deceasedLastName))));
 	}
 
 	/**

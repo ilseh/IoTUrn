@@ -35,12 +35,15 @@
 						</td>
 						<td>
 						<c:choose>
-							<c:when test="${urn.currentAction == 'turned_light_on'}">
+							<c:when test="${urn.currentStatus == 'light_on'}">
 								<img src="LightOn.gif" height="40" width="40"/>
 							</c:when>	
-							<c:when test="${urn.currentAction == 'turned_light_off'}">
+							<c:when test="${urn.currentStatus == 'light_off'}">
 								<img src="LightOff.gif" height="40" width="40"/>
 							</c:when>
+							<c:otherwise>
+								${urn.currentStatus}
+							</c:otherwise>
 						</c:choose>
 						</td>
 					</tr>

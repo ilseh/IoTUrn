@@ -34,7 +34,7 @@ public class Urn {
 	private String deceasedLastName;
 
 	@Transient
-	private String currentAction;
+	private String currentStatus;
 
 	@Formula("(SELECT max(d.time) FROM deveui_uplink d WHERE d.DevEUI = DevEUI)")
 	private Date dateLch;
@@ -113,16 +113,16 @@ public class Urn {
 		this.dateLch = dateLch;
 	}
 	/**
-	 * @return the currentAction
+	 * @return the currentStatus
 	 */
-	public String getCurrentAction() {
-		return currentAction;
+	public String getCurrentStatus() {
+		return currentStatus;
 	}
 	/**
-	 * @param currentAction the currentAction to set
+	 * @param currentStatus the currentStatus to set
 	 */
-	public void setCurrentAction(String currentAction) {
-		this.currentAction = currentAction;
+	public void setCurrentAction(String currentStatus) {
+		this.currentStatus = currentStatus;
 	}
 
 }
