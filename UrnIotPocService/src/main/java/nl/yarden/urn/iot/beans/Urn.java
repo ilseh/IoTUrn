@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Formula;
 
@@ -32,8 +31,6 @@ public class Urn {
 	// Name of the deceased person in the urn.
 	private String deceasedFirstName;
 	private String deceasedLastName;
-
-	@Transient
 	private String currentStatus;
 
 	@Formula("(SELECT max(d.time) FROM deveui_uplink d WHERE d.DevEUI = DevEUI)")
@@ -121,7 +118,7 @@ public class Urn {
 	/**
 	 * @param currentStatus the currentStatus to set
 	 */
-	public void setCurrentAction(String currentStatus) {
+	public void setCurrentStatus(String currentStatus) {
 		this.currentStatus = currentStatus;
 	}
 

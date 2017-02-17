@@ -1,7 +1,7 @@
 /**
  *
  */
-package nl.yarden.urn.iot.command;
+package nl.yarden.urn.iot.model.iot;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import nl.yarden.urn.iot.config.AppConfig;
-import nl.yarden.urn.iot.http.KpnHttpHandler;
+import nl.yarden.urn.iot.model.iot.http.KpnHttpHandler;
 
 /**
  * Process IoT device commands.
@@ -123,7 +123,7 @@ public class Processor {
 	 * @param value to encrypt
 	 * @return ha256 encryption of value.
 	 */
-	String createSha256(String value) {
+	public String createSha256(String value) {
 		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("SHA-256");

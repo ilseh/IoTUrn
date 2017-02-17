@@ -1,7 +1,7 @@
 /**
  *
  */
-package nl.yarden.urn.iot;
+package nl.yarden.urn.iot.model.data;
 
 import java.util.List;
 

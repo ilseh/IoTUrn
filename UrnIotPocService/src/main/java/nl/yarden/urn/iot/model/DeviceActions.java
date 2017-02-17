@@ -1,15 +1,15 @@
 /**
  *
  */
-package nl.yarden.urn.iot.ui;
+package nl.yarden.urn.iot.model;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import nl.yarden.urn.iot.command.Processor;
+import nl.yarden.urn.iot.model.iot.Processor;
 
 /**
- * Helper for UI to execute device actions.
+ * Helper to execute device actions.
  *
  */
 @Component
@@ -28,6 +28,4 @@ public class DeviceActions {
 			devicesProcessor.turnLightOff(deviceId);
 		}
 	}
-
-
 }

@@ -17,7 +17,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import nl.yarden.urn.iot.config.AppConfig;
-import nl.yarden.urn.iot.http.KpnHttpHandler;
+import nl.yarden.urn.iot.model.iot.Processor;
+import nl.yarden.urn.iot.model.iot.http.KpnHttpHandler;
 
 
 

@@ -1,7 +1,7 @@
 /**
  *
  */
-package nl.yarden.urn.iot.ui;
+package nl.yarden.urn.iot.model;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,10 +10,10 @@ import java.util.stream.StreamSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import nl.yarden.urn.iot.DevEuiRepository;
-import nl.yarden.urn.iot.UrnRepository;
 import nl.yarden.urn.iot.beans.DevEUI_uplink;
 import nl.yarden.urn.iot.beans.Urn;
+import nl.yarden.urn.iot.model.data.DevEuiRepository;
+import nl.yarden.urn.iot.model.data.UrnRepository;
 
 /**
  * Repository actions for UI stuff.
@@ -53,6 +53,13 @@ public class RepositoryActions {
 	 */
 	public List<Urn> getAllUrns() {
 		return StreamSupport.stream(urnRepository.findAll().spliterator(), false).collect(Collectors.toList());
+	}
+
+	/**
+	 * @return all urns
+	 */
+	public Urn getUrnByDeviceId(String deviceId) {
+		return urnRepository.findByDeviceId(deviceId);
 	}
 
 	/**

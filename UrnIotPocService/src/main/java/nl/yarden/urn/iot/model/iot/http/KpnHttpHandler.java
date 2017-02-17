@@ -1,7 +1,7 @@
 /**
  *
  */
-package nl.yarden.urn.iot.http;
+package nl.yarden.urn.iot.model.iot.http;
 
 import java.net.URI;
 import java.net.URISyntaxException;
