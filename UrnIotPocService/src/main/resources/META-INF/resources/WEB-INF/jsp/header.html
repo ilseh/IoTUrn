@@ -12,16 +12,18 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	  var str=location.href.toLowerCase();
+	var str = location.href.toLowerCase();
+	console.log("current location: " + str);
+  	$('.navigation li a').each(function() {
+  		console.log("current element: " + this.href.toLowerCase());
+    	if (str.indexOf(this.href.toLowerCase()) > -1) {
+    		console.log("matched!!!");
+			$("li.highlight").removeClass("highlight");
+            $(this).parent().addClass("highlight"); 
+        }
+    }); 
 
-  $('.navigation li a').each(function() {
-          if (str.indexOf(this.href.toLowerCase()) > -1) {
-				$("li.highlight").removeClass("highlight");
-                  $(this).parent().addClass("highlight"); 
-             }
-           }); 
-
-		})
+})
 </script>
 
 </head>
