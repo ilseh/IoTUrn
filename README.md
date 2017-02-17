@@ -1,4 +1,4 @@
 # IoTUrn
 IoT Urn
 
-test for trigger 23
+test for trigger 24
