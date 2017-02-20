@@ -14,18 +14,15 @@
 // Hightlight current item in menu.
 $(document).ready(function(){
 	var str = location.href.toLowerCase();
-	console.log("current location: " + str);
   	$('.navigation li a').each(function() {
   		console.log("current element: " + this.href.toLowerCase());
     	if (str.indexOf(this.href.toLowerCase()) > -1) {
-    		console.log("matched!!!");
 			$("li.highlight").removeClass("highlight");
             $(this).parent().addClass("highlight"); 
         }
     }); 
 })
 </script>
-
 </head>
 
 
