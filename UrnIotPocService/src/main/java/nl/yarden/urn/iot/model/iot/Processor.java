@@ -96,7 +96,7 @@ public class Processor {
 		} catch (DatatypeConfigurationException e) {
 			throw new RuntimeException(e);
 		}
-		return String.format("DevEUI=%s&FPort=%s&Payload=%s&AS_ID=%s&Confirmed=0&Time=%s",
+		return String.format("DevEUI=%s&FPort=%s&Payload=%s&AS_ID=%s&Confirmed=1&Time=%s",
 				deviceId, config.getKpnCommandPort(), commando, config.getKpnAsid(), currentDateTime);
 	}
 
