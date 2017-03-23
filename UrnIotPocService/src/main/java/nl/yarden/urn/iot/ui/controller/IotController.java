@@ -22,6 +22,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import nl.yarden.urn.iot.beans.DevEUI_uplink;
 import nl.yarden.urn.iot.beans.IotRequest;
 import nl.yarden.urn.iot.beans.Urn;
+import nl.yarden.urn.iot.model.EventHandler;
 import nl.yarden.urn.iot.model.IotModel;
 import nl.yarden.urn.iot.ui.DeceasedForm;
 import nl.yarden.urn.iot.ui.ListForm;
@@ -38,8 +39,11 @@ public class IotController {
 	private final static String VIEW_URNS = "viewUrns";
 	private final static String ADMIN = "admin";
 	private final static String DECEASED = "deceased";
+	private final static String DELETE_URN = "delete/urn";
 	@Autowired
 	private IotModel model;
+	@Autowired
+	private EventHandler eventHandler;
 
 	/**
 	 * Administer IoT device on urn.
@@ -63,7 +67,17 @@ public class IotController {
 		} catch (DataIntegrityViolationException ex) {
 			urnForm.setError(ex.getMostSpecificCause().getMessage());
 		}
-		return createDefaultModelView(new ModelAndView(ADMIN, "urnForm", urnForm));
+		return createDefaultModelView(new ModelAndView(new RedirectView("/" + VIEW_URNS)));
+	}
+
+	/**
+	 * Delete urn.
+	 * @param urnId to delete
+	 */
+	@RequestMapping(path="/" + DELETE_URN)
+	public ModelAndView deleteUrn(@RequestParam String deviceId) {
+		model.deleteUrn(deviceId);
+		return createDefaultModelView(new ModelAndView(new RedirectView("/" + VIEW_URNS)));
 	}
 
 	/**
@@ -97,6 +111,7 @@ public class IotController {
 	public void storeIotRequest(@RequestBody IotRequest request) {
 		LOG.debug(String.format("received request: %s", request));
 		model.saveUrnEvent(request.getDevEui_uplink());
+		eventHandler.handleMoveEvent(request.getDevEui_uplink());
 	}
 
 	/**

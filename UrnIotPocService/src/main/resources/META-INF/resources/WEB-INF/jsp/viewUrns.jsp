@@ -32,14 +32,17 @@
 						<td>${urn.dateLch}</td>
 						<td><a href="<c:url value="lightUrn"><c:param name="deviceId" value="${urn.devEUI}"/><c:param name="on" value="true"/><c:param name="deceasedLastName" value="${param.deceasedLastName}"/></c:url>"><input type="button" value="Aan"/></a>
 						<a href="<c:url value="lightUrn"><c:param name="deviceId" value="${urn.devEUI}"/><c:param name="on" value="false"/><c:param name="deceasedLastName" value="${param.deceasedLastName}"/></c:url>"><input type="button" value="Uit"/></a>
-						</td>
+						<a href="<c:url value="delete/urn"><c:param name="deviceId" value="${urn.devEUI}"/><c:param name="deceasedLastName" value="${param.deceasedLastName}"/></c:url>"><input type="button" value="Del"/></a></td>
 						<td>
 						<c:choose>
-							<c:when test="${urn.currentStatus == 'light_on'}">
-								<img src="LightOn.jpg" height="40" width="40"/>
+							<c:when test="${urn.currentStatus == 'search'}">
+								<abr title="Urn lamp aan"><img src="LightOn.jpg" height="40" width="40"/></abr>
 							</c:when>	
-							<c:when test="${urn.currentStatus == 'light_off'}">
+							<c:when test="${urn.currentStatus == ''}">
 								<img src="LightOff.jpg" height="40" width="40"/>
+							</c:when>
+							<c:when test="${urn.currentStatus == 'unauthorized_movement'}">
+								<abr title="Ongeoorloofde beweging"><img src="Alert.jpg" height="35" width="35"/></abr>
 							</c:when>
 							<c:otherwise>
 								${urn.currentStatus}

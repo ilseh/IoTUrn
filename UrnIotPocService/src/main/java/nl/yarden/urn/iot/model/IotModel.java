@@ -76,7 +76,7 @@ public class IotModel {
 	public String turnLight(boolean on, String deviceId) {
 		String action = on ? "on" : "off";
 		LOG.debug("Turn light {} for device: {}", action, deviceId);
-		String status = "light_" + action;
+		String status = on ? UrnStatus.SEARCH.getValue() : UrnStatus.NONE.getValue();
 		try {
 			deviceCommands.turnLight(on, deviceId);
 		} catch (HttpClientErrorException ex) {
@@ -86,11 +86,20 @@ public class IotModel {
 				status = ex.getStatusText().substring(0, MAX_LENGTH_ERR_STATUS);
 			}
 		} catch (Exception ex) {
-			status = ex.getMessage().substring(0, MAX_LENGTH_ERR_STATUS);
+			status = ex.getMessage();
 		}
 		Urn urn = repositories.getUrnByDeviceId(deviceId);
 		urn.setCurrentStatus(status);
 		saveUrn(urn);
 		return status;
+	}
+
+	/**
+	 * Delete urn.
+	 * @param deviceId of urn
+	 */
+	public void deleteUrn(String deviceId) {
+		Urn urn = repositories.getUrnByDeviceId(deviceId);
+		repositories.deleteUrn(urn);
 	}
 }

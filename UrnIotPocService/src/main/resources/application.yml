@@ -23,3 +23,10 @@ appConfig:
     kpnAeskey: B9E2547747DEB3A59671D042B5361CF3
     kpnLoraUrl: https://api.kpn-lora.com/thingpark/lrc/rest/downlink
     kpnCommandPort: 119
+    smtpConfig:
+        host: smtp.gmail.com
+        isSecure: true
+        password: Yarden2014
+        username: yarden.tester@gmail.com
+    mailTo: ilse.haanstra@yarden.nl
+    mailFrom: yarden.tester@gmail.com

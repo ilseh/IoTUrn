@@ -17,6 +17,10 @@ public class AppConfig {
 	private String kpnAeskey;
 	private String kpnLoraUrl;
 	private String kpnCommandPort;
+	private SmtpConfig smtpConfig;
+	private String mailTo;
+	private String mailFrom;
+
 	/**
 	 * @return the kpnAsid
 	 */
@@ -65,6 +69,40 @@ public class AppConfig {
 	public void setKpnCommandPort(String kpnCommandPort) {
 		this.kpnCommandPort = kpnCommandPort;
 	}
-
-
+	/**
+	 * @return the smtpConfig
+	 */
+	public SmtpConfig getSmtpConfig() {
+		return smtpConfig;
+	}
+	/**
+	 * @param smtpConfig the smtpConfig to set
+	 */
+	public void setSmtpConfig(SmtpConfig smtpConfig) {
+		this.smtpConfig = smtpConfig;
+	}
+	/**
+	 * @return the mailTo
+	 */
+	public String getMailTo() {
+		return mailTo;
+	}
+	/**
+	 * @param mailTo the mailTo to set
+	 */
+	public void setMailTo(String mailTo) {
+		this.mailTo = mailTo;
+	}
+	/**
+	 * @return the mailFrom
+	 */
+	public String getMailFrom() {
+		return mailFrom;
+	}
+	/**
+	 * @param mailFrom the mailFrom to set
+	 */
+	public void setMailFrom(String mailFrom) {
+		this.mailFrom = mailFrom;
+	}
 }

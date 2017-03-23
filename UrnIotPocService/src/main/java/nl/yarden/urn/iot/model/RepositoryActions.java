@@ -78,4 +78,8 @@ public class RepositoryActions {
 	public void saveUrnEvent(DevEUI_uplink event) {
 		eventsRepository.save(event);
 	}
+
+	public void deleteUrn(Urn urn) {
+		urnRepository.delete(urn);
+	}
 }

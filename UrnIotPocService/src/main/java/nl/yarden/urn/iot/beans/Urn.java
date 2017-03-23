@@ -12,6 +12,8 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.Formula;
 
+import nl.yarden.urn.iot.model.UrnStatus;
+
 /**
  * Urn.
  *
@@ -120,6 +122,20 @@ public class Urn {
 	 */
 	public void setCurrentStatus(String currentStatus) {
 		this.currentStatus = currentStatus;
+	}
+	/**
+	 * @param currentStatus the currentStatus to set
+	 */
+	public void setCurrentStatus(UrnStatus currentStatus) {
+		this.currentStatus = currentStatus.getValue();
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return getDevEUI() + " - " + getDeceasedLastName() + "(" + getDeceasedFirstName() + ")";
 	}
 
 }
