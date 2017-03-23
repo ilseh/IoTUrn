@@ -5,8 +5,6 @@ package nl.yarden.urn.iot.model;
 
 import java.util.Arrays;
 
-import javax.mail.MessagingException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +55,7 @@ public class EventHandler {
 	private void sendEmail(Urn urn) {
 		try {
 			emailUtil.sendEmail(Arrays.asList(config.getMailTo()), config.getMailFrom(), getMailSubject(urn), getMailText(urn), true);
-		} catch (MessagingException e) {
+		} catch (Throwable e) {
 			LOG.error("Could not send email", e);
 		}
 	}
