@@ -45,9 +45,6 @@ public class EventHandler {
 		if (!eventValidation.isValidMovement(urn, UrnStatus.SEARCH.getValue())) {
 			urn.setCurrentStatus(UrnStatus.INVALID_MOVE);
 			sendEmail(urn);
-		} else {
-			// Assume searched urn was found and light can be turned off.
-			urn.setCurrentStatus(UrnStatus.NONE);
 		}
 		repositoryActions.saveUrn(urn);
 	}
