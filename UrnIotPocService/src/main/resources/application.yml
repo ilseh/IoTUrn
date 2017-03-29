@@ -28,5 +28,5 @@ appConfig:
         isSecure: true
         password: Yarden2014
         username: yarden.tester@gmail.com
-    mailTo: ilse.haanstra@yarden.nl
+    mailTo: yardentest.mailbox1@gmail.com
     mailFrom: yarden.tester@gmail.com
