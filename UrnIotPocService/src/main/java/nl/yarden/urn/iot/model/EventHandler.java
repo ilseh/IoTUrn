@@ -31,10 +31,22 @@ public class EventHandler {
 	private EmailUtil emailUtil;
 	@Autowired
 	private AppConfig config;
+	@Autowired
+	private PayloadInterpreter payloadInterpreter;
 
 	private static final String EMAIL_SUBJECT = "Urn %s is bewogen zonder dat dit is aangemeld";
 	private static final String EMAIL_TEXT = "Urn %s is bewogen zonder dat dit is aangemeld\r\n\r\n"
 			+ "[Dit is een automatisch gegenereerde email.]";
+
+	/**
+	 * Handle event received from urn.
+	 * @param uplink the event
+	 */
+	public void handleEvent(DevEUI_uplink uplink) {
+		if (payloadInterpreter.isMovement(uplink.getPayload_hex())) {
+			handleMoveEvent(uplink);
+		}
+	}
 
 	/**
 	 * Handle move event of urn.

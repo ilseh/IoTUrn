@@ -111,7 +111,7 @@ public class IotController {
 	public void storeIotRequest(@RequestBody IotRequest request) {
 		LOG.debug(String.format("received request: %s", request));
 		model.saveUrnEvent(request.getDevEui_uplink());
-		eventHandler.handleMoveEvent(request.getDevEui_uplink());
+		eventHandler.handleEvent(request.getDevEui_uplink());
 	}
 
 	/**
