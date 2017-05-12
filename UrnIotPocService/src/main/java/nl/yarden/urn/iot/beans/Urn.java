@@ -35,7 +35,7 @@ public class Urn {
 	private String deceasedLastName;
 	private String currentStatus;
 
-	@Formula("(SELECT max(d.time) FROM deveui_uplink d WHERE d.DevEUI = DevEUI)")
+	@Formula("(SELECT max(d.time) FROM deveui_uplink d WHERE d.DevEUI = DevEUI and d.event_type='MOVE')" )
 	private Date dateLch;
 
 	/**

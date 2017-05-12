@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
@@ -26,6 +28,10 @@ public class DevEUI_uplink {
 
 	private String status;
 
+	// What event does the payload_hex contain
+	@Enumerated(EnumType.STRING)
+	private EventType eventType;
+	
 	/**
 	 * @return the id
 	 */
@@ -95,6 +101,20 @@ public class DevEUI_uplink {
 	 */
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	/**
+	 * @return the eventType
+	 */
+	public EventType getEventType() {
+		return eventType;
+	}
+
+	/**
+	 * @param eventType the eventType to set
+	 */
+	public void setEventType(EventType eventType) {
+		this.eventType = eventType;
 	}
 
 }

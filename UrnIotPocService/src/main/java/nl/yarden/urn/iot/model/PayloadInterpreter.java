@@ -16,7 +16,7 @@ public class PayloadInterpreter {
 	private static final int IO_FLAGS_INDEX = 30;
 	private static final int IO_FLAGS_SIZE = 2;
 	private static final String IS_MOVING = "1";
-	private static final int COPY_OF_IO3_INDEX = 3; // (from the right of String of bits)
+	private static final int INDEX_COPY_OF_IO3 = 3; // (from the right of String of bits)
 
 	/**
 	 * @param payload of io device
@@ -24,8 +24,8 @@ public class PayloadInterpreter {
 	 */
 	public boolean isMovement(String payload) {
 		String ioFlagsHex = payload.substring(IO_FLAGS_INDEX, IO_FLAGS_INDEX + IO_FLAGS_SIZE);
-		String ioFlagsBits = fromHexToBinary(ioFlagsHex);
-		return IS_MOVING.equals(rightSubstring(ioFlagsBits, COPY_OF_IO3_INDEX, IS_MOVING.length()));
+		String ioFlagsBits = String.format("%8s", fromHexToBinary(ioFlagsHex)).replace(' ', '0');
+		return IS_MOVING.equals(rightSubstring(ioFlagsBits, INDEX_COPY_OF_IO3, IS_MOVING.length()));
 	}
 
 	/**

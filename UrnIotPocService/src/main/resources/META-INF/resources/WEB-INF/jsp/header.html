@@ -14,10 +14,18 @@
 <script type="text/javascript">
 // Hightlight current item in menu.
 $(document).ready(function(){
-	var str = location.href.toLowerCase();
+	var currentPage = location.href.toLowerCase().split("/").pop().toLowerCase();
+	if (currentPage.includes('viewevents')) {
+		console.log('view events match');
+		currentPage = 'viewurns';
+	} else {
+		console.log('no viewevents match, ' + currentPage);
+	}
+	console.log("currentPage: " + currentPage);
   	$('.navigation li a').each(function() {
-  		console.log("current element: " + this.href.toLowerCase());
-    	if (str.indexOf(this.href.toLowerCase()) > -1) {
+  		var menuItemUrlPage = this.href.split("/").pop().toLowerCase();
+  		console.log("current element: " + menuItemUrlPage);
+    	if (currentPage.includes(menuItemUrlPage)) {
 			$("li.highlight").removeClass("highlight");
             $(this).parent().addClass("highlight"); 
         }

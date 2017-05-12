@@ -22,6 +22,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import nl.yarden.urn.iot.beans.DevEUI_uplink;
 import nl.yarden.urn.iot.beans.IotRequest;
 import nl.yarden.urn.iot.beans.Urn;
+import nl.yarden.urn.iot.model.DataTransformer;
 import nl.yarden.urn.iot.model.EventHandler;
 import nl.yarden.urn.iot.model.IotModel;
 import nl.yarden.urn.iot.ui.DeceasedForm;
@@ -44,6 +45,8 @@ public class IotController {
 	private IotModel model;
 	@Autowired
 	private EventHandler eventHandler;
+	@Autowired
+	private DataTransformer dataTransformer;
 
 	/**
 	 * Administer IoT device on urn.
@@ -110,6 +113,7 @@ public class IotController {
 	@RequestMapping(path="/devdata", method = RequestMethod.POST)
 	public void storeIotRequest(@RequestBody IotRequest request) {
 		LOG.debug(String.format("received request: %s", request));
+		dataTransformer.setEvent(request.getDevEui_uplink());
 		model.saveUrnEvent(request.getDevEui_uplink());
 		eventHandler.handleEvent(request.getDevEui_uplink());
 	}
@@ -126,7 +130,7 @@ public class IotController {
 		eventsPagedList.setSort(new MutableSortDefinition("time", true, false));
 		eventsPagedList.resort();
 		ListForm<DevEUI_uplink> eventsForm = new ListForm<>(eventsPagedList);
-		eventsForm.setColumnHeaders(Arrays.asList("ID", "Urn tag", "Payload", "Tijdstip beweging"));
+		eventsForm.setColumnHeaders(Arrays.asList("ID", "Urn tag", "Payload", "Type event", "Tijdstip"));
 
 		return createDefaultModelView(new ModelAndView(OVERVIEW, "eventsForm", eventsForm));
 	}
