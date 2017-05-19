@@ -124,13 +124,20 @@ public class IotController {
 	 * @return view with urn events information
 	 */
 	@RequestMapping(path="/viewEvents")
-	public ModelAndView viewEvents(@RequestParam(required = true) String urnTag) {
+	public ModelAndView viewEvents(@RequestParam(required = true) String urnTag, 
+			@RequestParam(required = false) Integer currentPage, @RequestParam(required = false) String gotoPage) {
 		LOG.debug("Viewing urn events");
 		PagedListHolder<DevEUI_uplink> eventsPagedList = new PagedListHolder<>(model.getAllEvents(urnTag));
+		eventsPagedList.setPageSize(50);
 		eventsPagedList.setSort(new MutableSortDefinition("time", true, false));
 		eventsPagedList.resort();
+		eventsPagedList.setPage(currentPage == null? 0 : currentPage);
 		ListForm<DevEUI_uplink> eventsForm = new ListForm<>(eventsPagedList);
 		eventsForm.setColumnHeaders(Arrays.asList("ID", "Urn tag", "Payload", "Type event", "Tijdstip"));
+		
+		if ("next".equalsIgnoreCase(gotoPage)) {
+			eventsPagedList.nextPage();
+		} 
 
 		return createDefaultModelView(new ModelAndView(OVERVIEW, "eventsForm", eventsForm));
 	}
