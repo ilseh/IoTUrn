@@ -8,6 +8,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 /**
  * Data we receive form IoT platform and what we want to store in the db.
@@ -20,8 +21,12 @@ public class DevEUI_uplink {
 	private Long id;
 
 	@Column(name = "time", columnDefinition = "timestamp with time zone")
-	private Date time;
+	private Date dateTime;
 
+	// Time received from Kpn is not always in correct format.
+	@Transient
+	private String time;
+	
 	private String payload_hex;
 
 	private String DevEUI;
@@ -49,15 +54,15 @@ public class DevEUI_uplink {
 	/**
 	 * @return the time
 	 */
-	public Date getTime() {
-		return time;
+	public Date getDateTime() {
+		return dateTime;
 	}
 
 	/**
 	 * @param time the time to set
 	 */
-	public void setTime(Date time) {
-		this.time = time;
+	public void setDateTime(Date dateTime) {
+		this.dateTime = dateTime;
 	}
 
 
@@ -115,6 +120,20 @@ public class DevEUI_uplink {
 	 */
 	public void setEventType(EventType eventType) {
 		this.eventType = eventType;
+	}
+
+	/**
+	 * @return the time
+	 */
+	public String getTime() {
+		return time;
+	}
+
+	/**
+	 * @param time the time to set
+	 */
+	public void setTime(String time) {
+		this.time = time;
 	}
 
 }

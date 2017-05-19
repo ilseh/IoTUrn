@@ -30,7 +30,7 @@
 						<td>${event.devEUI}</td>
 						<td>${event.payload_hex}</td>
 						<td>${event.eventType}</td>
-						<td>${event.time}</td>
+						<td>${event.dateTime}</td>
 					</tr>
 				</c:forEach>
 			</tbody>

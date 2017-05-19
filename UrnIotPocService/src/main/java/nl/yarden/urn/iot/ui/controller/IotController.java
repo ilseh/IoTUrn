@@ -113,6 +113,7 @@ public class IotController {
 	@RequestMapping(path="/devdata", method = RequestMethod.POST)
 	public void storeIotRequest(@RequestBody IotRequest request) {
 		LOG.debug(String.format("received request: %s", request));
+		dataTransformer.correctTime(request.getDevEui_uplink());
 		dataTransformer.setEvent(request.getDevEui_uplink());
 		model.saveUrnEvent(request.getDevEui_uplink());
 		eventHandler.handleEvent(request.getDevEui_uplink());
@@ -129,7 +130,7 @@ public class IotController {
 		LOG.debug("Viewing urn events");
 		PagedListHolder<DevEUI_uplink> eventsPagedList = new PagedListHolder<>(model.getAllEvents(urnTag));
 		eventsPagedList.setPageSize(50);
-		eventsPagedList.setSort(new MutableSortDefinition("time", true, false));
+		eventsPagedList.setSort(new MutableSortDefinition("dateTime", true, false));
 		eventsPagedList.resort();
 		eventsPagedList.setPage(currentPage == null? 0 : currentPage);
 		ListForm<DevEUI_uplink> eventsForm = new ListForm<>(eventsPagedList);
