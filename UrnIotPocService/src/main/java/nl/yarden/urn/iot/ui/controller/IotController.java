@@ -99,6 +99,7 @@ public class IotController {
 		} else {
 			urnsPagedList = new PagedListHolder<>(model.getAllUrns(), new MutableSortDefinition("deceasedLastName", false, false));
 		}
+		urnsPagedList.setSort(new MutableSortDefinition("deceasedLastName", true, true));
 		urnsPagedList.resort();
 		urnsForm = new ListForm<>(urnsPagedList);
 		urnsForm.setColumnHeaders(Arrays.asList("ID", "Overledene", "Intern referentie id", "Urn Id", "Datum laatste beweging", "", ""));
