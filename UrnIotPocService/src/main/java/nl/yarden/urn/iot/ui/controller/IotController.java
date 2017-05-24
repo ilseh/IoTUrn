@@ -116,8 +116,8 @@ public class IotController {
 		if (request.getDevEui_uplink() == null) {
 			LOG.warn("Received null DevEUI_uplink, this should not happen!");
 		} else {
-			LOG.debug(String.format("received request for %s on time %s, payload %s", request.getDevEui_uplink().getDateTime(),
-																			   		  request.getDevEui_uplink().getDevEUI(), 
+			LOG.debug(String.format("received request for %s on time %s, payload %s", request.getDevEui_uplink().getDevEUI(),
+																					  request.getDevEui_uplink().getTime(),
 																			   		  request.getDevEui_uplink().getPayload_hex()));
 			dataTransformer.correctTime(request.getDevEui_uplink());
 			dataTransformer.setEvent(request.getDevEui_uplink());
