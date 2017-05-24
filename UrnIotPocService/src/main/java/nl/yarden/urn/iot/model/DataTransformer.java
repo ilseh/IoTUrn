@@ -33,6 +33,7 @@ public class DataTransformer {
 	 */
 	public void setEvent(DevEUI_uplink uplink) {
 		if (payloadInterpreter.isMovement(uplink.getPayload_hex())) {
+			LOG.debug("Reveived movement event for {}", uplink.getDevEUI());
 			uplink.setEventType(EventType.MOVE);
 		}
 	}
