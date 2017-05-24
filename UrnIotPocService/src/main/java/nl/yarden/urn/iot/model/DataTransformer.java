@@ -38,13 +38,13 @@ public class DataTransformer {
 	}
 	
 	public void correctTime(DevEUI_uplink uplink) {
-		Matcher invalidDateTimeMatcher = KPN_INVALID_DATETIME.matcher(uplink.getTime());
-		if (invalidDateTimeMatcher.matches()) {
-			// Update milliseconds from xxxx to xxx.
-			uplink.setTime(invalidDateTimeMatcher.group(1) + invalidDateTimeMatcher.group(2).substring(0, 3) 
-							+ invalidDateTimeMatcher.group(3));
-		} 
 		try {
+			Matcher invalidDateTimeMatcher = KPN_INVALID_DATETIME.matcher(uplink.getTime());
+			if (invalidDateTimeMatcher.matches()) {
+				// Update milliseconds from xxxx to xxx.
+				uplink.setTime(invalidDateTimeMatcher.group(1) + invalidDateTimeMatcher.group(2).substring(0, 3) 
+								+ invalidDateTimeMatcher.group(3));
+			} 
 			uplink.setDateTime(SIMPLE_DATE_FORMAT.parse(uplink.getTime()));
 		} catch (ParseException e) {
 			LOG.error("Could not transform DevEUI time to datetime", e);

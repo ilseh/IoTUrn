@@ -113,7 +113,8 @@ public class IotController {
 	 */
 	@RequestMapping(path="/devdata", method = RequestMethod.POST)
 	public void storeIotRequest(@RequestBody IotRequest request) {
-		LOG.debug(String.format("received request: %s", request));
+		LOG.debug(String.format("received request on time %s, payload %s", request.getDevEui_uplink().getDateTime(),
+																		   request.getDevEui_uplink().getPayload_hex()));
 		dataTransformer.correctTime(request.getDevEui_uplink());
 		dataTransformer.setEvent(request.getDevEui_uplink());
 		model.saveUrnEvent(request.getDevEui_uplink());
